@@ -46,7 +46,7 @@ def agregar_producto():
 
     while True:
         cantidad_input = input("Ingrese la cantidad disponible: ").strip()
-        if not cantidad_input:
+        if not cantidad_input:  # si no se ingresa nada
             print("La cantidad no puede estar vacía. Intente nuevamente.")
             continue
         try:
@@ -73,7 +73,9 @@ def agregar_producto():
             print("El precio debe ser un número. Intente nuevamente.")
 
     categoria = input("Ingrese la categoría del producto: ").strip()
-    fecha_hora = datetime.now().strftime("%Y-%m-%d %H:%M:%S")
+    fecha_hora = datetime.now().strftime(
+        "%Y-%m-%d %H:%M:%S"
+    )  # fecha y hora actual y formato
 
     conexion = sqlite3.connect("inventario.db")
     try:
@@ -103,13 +105,16 @@ def obtener_productos():
         cursor.execute(
             "SELECT id, nombre, descripcion, cantidad, precio, categoria, fecha_hora FROM productos"
         )
-        productos = cursor.fetchall()
+        productos = cursor.fetchall()  # obtiene todos los productos
         return productos
     except Exception as e:
         print(f"Error al consultar productos: {e}")
         return []
     finally:
         conexion.close()
+
+
+# def imprimir_tabla(productos) es quien imprimira por pantalla en ferontend.py
 
 
 def actualizar_producto():
@@ -127,7 +132,7 @@ def actualizar_producto():
     try:
         cursor = conexion.cursor()
         cursor.execute("SELECT * FROM productos WHERE id = ?", (id_producto,))
-        producto = cursor.fetchone()
+        producto = cursor.fetchone()  # se obtiene el producto por su id
         if not producto:
             print("No se encontró un producto con ese ID.")
             return
@@ -224,7 +229,6 @@ def buscar_producto():
     print("Buscar por:")
     print("1. ID")
     print("2. Nombre")
-    print("3. Categoría")
     opcion = input("Seleccione una opción: ").strip()
     conexion = sqlite3.connect("inventario.db")
     try:
@@ -243,17 +247,13 @@ def buscar_producto():
                 "SELECT * FROM productos WHERE LOWER(nombre) LIKE ?",
                 ("%" + nombre.lower() + "%",),
             )
-        elif opcion == "3":
-            categoria = input("Ingrese la categoría a buscar: ").strip()
-            cursor.execute(
-                "SELECT * FROM productos WHERE LOWER(categoria) LIKE ?",
-                ("%" + categoria.lower() + "%",),
-            )
         else:
             print("Opción no válida.")
             return
 
-        productos = cursor.fetchall()
+        productos = (
+            cursor.fetchall()
+        )  # obtiene los productos que coinciden con la búsqueda
         if productos:
             print("\nResultados de la búsqueda:")
             for producto in productos:

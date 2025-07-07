@@ -126,10 +126,10 @@ def main_menu():
             eliminar_producto()
             pausa()
         elif opcion == "5":
-            buscar_producto()
+            buscar_producto_frontend()
             pausa()
         elif opcion == "6":
-            reporte_bajo_stock()
+            reporte_bajo_stock_frontend()
             pausa()
         elif opcion == "7":
             limpiar_pantalla()

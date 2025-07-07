@@ -63,6 +63,30 @@ def imprimir_tabla(productos):
         )
 
 
+def buscar_producto_frontend():
+    """
+    Llama a buscar_producto del backend y muestra los resultados usando imprimir_tabla.
+    """
+    productos = buscar_producto()
+    if productos:
+        print("\nResultados de la búsqueda:")
+        imprimir_tabla(productos)
+    else:
+        print("No se encontraron productos.")
+
+
+def reporte_bajo_stock_frontend():
+    """
+    Llama a reporte_bajo_stock del backend y muestra los resultados usando imprimir_tabla.
+    """
+    productos = reporte_bajo_stock()
+    if productos:
+        print("\nProductos con bajo stock:")
+        imprimir_tabla(productos)
+    else:
+        print("No hay productos con bajo stock.")
+
+
 def mostrar_menu():
     """
     Muestra el menú de opciones disponibles para el usuario.

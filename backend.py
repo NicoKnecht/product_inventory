@@ -224,7 +224,7 @@ def eliminar_producto():
 
 def buscar_producto():
     """
-    Busca un producto por ID, nombre o categoría.
+    Busca productos por ID o nombre y devuelve una lista de productos encontrados.
     """
     print("Buscar por:")
     print("1. ID")
@@ -239,7 +239,7 @@ def buscar_producto():
                 id_producto = int(id_input)
             except ValueError:
                 print("Debe ingresar un ID válido.")
-                return
+                return []
             cursor.execute("SELECT * FROM productos WHERE id = ?", (id_producto,))
         elif opcion == "2":
             nombre = input("Ingrese el nombre a buscar: ").strip()
@@ -249,28 +249,19 @@ def buscar_producto():
             )
         else:
             print("Opción no válida.")
-            return
-
-        productos = (
-            cursor.fetchall()
-        )  # obtiene los productos que coinciden con la búsqueda
-        if productos:
-            print("\nResultados de la búsqueda:")
-            for producto in productos:
-                print(
-                    f"ID: {producto[0]}, Nombre: {producto[1]}, Descripción: {producto[2]}, Cantidad: {producto[3]}, Precio: ${producto[4]}, Categoría: {producto[5]}, Fecha y hora: {producto[6]}"
-                )
-        else:
-            print("No se encontraron productos.")
+            return []
+        productos = cursor.fetchall()
+        return productos
     except Exception as e:
         print(f"Error al buscar producto: {e}")
+        return []
     finally:
         conexion.close()
 
 
 def reporte_bajo_stock():
     """
-    Reporta productos con cantidad igual o inferior a un límite especificado por el usuario.
+    Devuelve una lista de productos con cantidad igual o inferior a un límite especificado por el usuario.
     """
     while True:
         limite_input = input("Ingrese el límite de cantidad para el reporte: ").strip()
@@ -288,15 +279,9 @@ def reporte_bajo_stock():
             (limite,),
         )
         productos = cursor.fetchall()
-        if productos:
-            print(f"\nProductos con cantidad igual o menor a {limite}:")
-            for producto in productos:
-                print(
-                    f"ID: {producto[0]}, Nombre: {producto[1]}, Descripción: {producto[2]}, Cantidad: {producto[3]}, Precio: ${producto[4]}, Categoría: {producto[5]}, Fecha y hora: {producto[6]}"
-                )
-        else:
-            print("No hay productos con bajo stock.")
+        return productos
     except Exception as e:
         print(f"Error al generar el reporte: {e}")
+        return []
     finally:
         conexion.close()
